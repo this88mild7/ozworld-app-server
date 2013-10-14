@@ -14,13 +14,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.rnts.ozworld.dto.CategoryDto;
+import com.rnts.ozworld.dto.ContentsDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:servlet-contextForTest.xml"})
-public class CategoryDaoTest {
+public class ContentsDaoTest {
+	
 	
 	@Autowired
-	CategoryDao cateDao;
+	ContentsDao contentsDao;
 
 	@Before
 	public void setUp() throws Exception {
@@ -37,10 +39,24 @@ public class CategoryDaoTest {
 		// given 
 
 		// when
-		List<CategoryDto> cateList = cateDao.list();
+		List<ContentsDto> cateList = contentsDao.list();
 
 		// then
 		assertThat(cateList.size(), is(not(0)));
+
+	}
+	
+	@Test
+	public void testListByCategoryID() {
+		
+		// given 
+		String categoryId = "54";
+
+		// when
+		List<ContentsDto> contentsList = contentsDao.listByCategoryId(categoryId);
+
+		// then
+		assertThat(contentsList.size(), is(not(0)));
 
 	}
 

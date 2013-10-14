@@ -10,9 +10,6 @@ import com.rnts.ozworld.dto.CategoryDto;
 @Repository
 public class CategoryDao extends SqlSessionDaoSupport{
 
-	public int connectionTest() {
-		return (Integer)getSqlSession().selectOne("categoryQuery.connectionTest");
-	}
 
 	public List<CategoryDto> list() {
 		return getSqlSession().selectList("categoryQuery.list");

@@ -2,26 +2,44 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="categoryQuery">
+<mapper namespace="contentsQuery">
     
-    <resultMap type="com.rnts.ozworld.dto.CategoryDto" id="categoryDtoMap">
-        <id column="CATE_ID" property="cateId"/>
-        <result column="CATE_NM" property="cateNm"/>
-        <result column="CATE_LEVEL" property="cateLevel"/>
-        <result column="ORDERING_NO" property="orderingNo"/>
+    <resultMap type="com.rnts.ozworld.dto.ContentsDto" id="contentsDtoMap">
+        <id column="CONTENTS_ID" property="contentsId"/>
+        <result column="CONTENTS_NM" property="contentsNm"/>
+        <result column="CONTENTS_DESC" property="contentsDesc"/>
+        <result column="SRC_PATH" property="srcPath"/>
+        <result column="IMG_PATH" property="imgPath"/>
+        <result column="PREFIX_URL" property="prefixUrl"/>
+        
     </resultMap>
-	
     
-	<select id="list" resultMap="categoryDtoMap">
-		SELECT /* categoryQuery.list 2013.08.21 최지순 */  
-			A.CATE_ID ,
-			A.CATE_NM ,
-			A.CATE_LEVEL ,
-			A.ORDERING_NO ,
-			A.PARENT_CATE_ID
-		 FROM BG_CATE A
-		 ORDER BY  A.ORDERING_NO
+	<select id="list" resultMap="contentsDtoMap">
+		SELECT /* contentsQuery.list */  
+			CONTENTS_ID
+			, CONTENTS_NM
+			, CONTENTS_DESC
+			, SRC_PATH
+			, IMG_PATH
+			, PREFIX_URL
+		 FROM BG_CONTENTS		 
 	</select>
+	
+	<select id="listByCategoryId" resultMap="contentsDtoMap">
+		SELECT /* contentsQuery.listByCategoryId  */  
+			BC.CONTENTS_ID
+			, BC.CONTENTS_NM
+			, BC.CONTENTS_DESC
+			, BC.SRC_PATH
+			, BC.IMG_PATH
+			, BC.PREFIX_URL
+		 FROM BG_CONTENTS BC, BG_CATE_CONTENTS_RELATIONSHIPS BCCR 
+		 WHERE 1=1
+		 AND BCCR.CONTENTS_ID = BC.CONTENTS_ID
+		 AND BCCR.CATE_ID = #{categoryId} 
+	</select>
+	
+	
 	
 
     <!-- 

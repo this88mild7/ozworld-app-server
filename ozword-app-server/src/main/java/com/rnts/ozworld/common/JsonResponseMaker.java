@@ -1,17 +1,13 @@
 package com.rnts.ozworld.common;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rnts.ozworld.dto.CategoryDto;
+import com.rnts.ozworld.dto.ContentsDto;
 
 @Service
 public class JsonResponseMaker {
@@ -25,6 +21,13 @@ public class JsonResponseMaker {
 	private final String CATE_NAEM = "cateNm";
 	private final String CATE_LEVEL = "cateLevel";
 	private final String ORDERING_NO = "orderingNo";
+	
+	private final String CONTENTS_ID="contentsId";
+	private final String CONTENTS_NM = "contentsNm";
+	private final String CONTENTS_DESC ="contentsDesc";
+	private final String SRC_PATH = "srcPath";
+	private final String IMG_PATH = "imgPath";
+	private final String PREFIX_URL="prefixUrl";
 	
 	public String categoryListToJson(List<CategoryDto> cateList) {
 		JSONObject json = new JSONObject();
@@ -46,71 +49,28 @@ public class JsonResponseMaker {
 		return json.toJSONString();
 	}
 	
-//	public String generateMapList(String jsonParentName, List<Map> map){
-//		JSONObject json = new JSONObject();
-//		
-//		if (map != null) {
-//			setSucessCode(json);
-//			JSONArray result = new JSONArray();
-//			for(Map parameter : map){
-//				result.add(parameter);
-//			}
-//			json.put(jsonParentName, result);
-//		}else{
-//			setFailCode(json);
-//		}
-//		
-//		return json.toJSONString();
-//	}
-//	
-//	public String generateMap(String jsonParentName, Map map){
-//		JSONObject json = new JSONObject();
-//		
-//		if (map != null) {
-//			setSucessCode(json);
-//			json.put(jsonParentName, map);
-//		}else{
-//			setFailCode(json);
-//		}
-//		return json.toJSONString();
-//	}
-//	
-//	public String generateOk(){
-//		JSONObject json = new JSONObject();
-//		setSucessCode(json);
-//		return json.toJSONString();
-//	}
-//	
-////	"{\"status\":\"200\",\"data\":{\"test\":{\"name\":\"test\",\"type\":\"item\"}}}";
-//	public String generateCateListForTree(List<Map> cateList) {
-//		JSONObject json = new JSONObject();
-//		if (cateList != null) {
-//			setSucessCode(json);
-//			Map cateMap = new LinkedHashMap();
-//			for(Map parameter : cateList){
-//				cateMap.put("cate_"+parameter.get("CATE_ID"), parameter);
-//			}
-//			json.put("data", cateMap);
-//		}else{
-//			setFailCode(json);
-//		}
-//		return json.toJSONString();
-//	}
-//	
-//	public String generateSeriesListForTree(List<Map> cateList) {
-//		JSONObject json = new JSONObject();
-//		if (cateList != null) {
-//			setSucessCode(json);
-//			Map cateMap = new LinkedHashMap();
-//			for(Map parameter : cateList){
-//				cateMap.put("series_"+parameter.get("CONTENTS_SERIES_ID"), parameter);
-//			}
-//			json.put("data", cateMap);
-//		}else{
-//			setFailCode(json);
-//		}
-//		return json.toJSONString();
-//	}
+	public String contentsListToJson(List<ContentsDto> contentsList) {
+		JSONObject json = new JSONObject();
+		if(contentsList != null){
+			setSucessCode(json);
+			JSONArray result = new JSONArray();
+			for(ContentsDto  contents : contentsList){
+				JSONObject contentsJson = new JSONObject();
+				contentsJson.put(CONTENTS_ID, contents.getContentsId());
+				contentsJson.put(CONTENTS_NM, contents.getContentsNm());
+				contentsJson.put(CONTENTS_DESC, contents.getContentsDesc());
+				contentsJson.put(SRC_PATH, contents.getSrcPath());
+				contentsJson.put(IMG_PATH, contents.getImgPath());
+				contentsJson.put(PREFIX_URL, contents.getPrefixUrl());
+				result.add(contentsJson);
+			}
+			json.put("data", result);
+		}else{
+			setNotFoundCode(json);
+		}
+		return json.toJSONString();
+	}
+	
 	
 	private void setSucessCode(JSONObject result) {
 		result.put(STATUS, OK_STATUS);
